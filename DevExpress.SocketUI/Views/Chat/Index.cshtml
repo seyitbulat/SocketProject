@@ -22,11 +22,12 @@
 <script>
     var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7121/chat").build();
 
-    connection.on("ReceiveMessage", function (user, message) {
-        var encodedMessage = user + " söyledi: " + message;
+    connection.on("ReceiveMessage", function (user, user2, message) {
+        var encodedMessage = user + ": " + message;
+        console.log(encodedMessage)
         var li = document.createElement("li");
         li.textContent = encodedMessage;
-        $("#messagesList").appendChild(li);
+    $("#messagesList").append(li);
     });
 
     connection.start().catch(function (err) {
@@ -38,22 +39,26 @@
     });
 
     $("#sendMessage").click(function () {
-        sendMessage();
+        sendPrivateMessage();
 
     });
 
     function joinChat() {
         var user = $("#userInput").val();
         var user2 = $("#user2Input").val();
-        connection.invoke("JoinPrivateChat", user,user2);
+        connection.invoke("JoinPrivateChat", user,user2, "1");
     }
 
-    function sendMessage() {
+    function sendPrivateMessage() {
         var user = $("#userInput").val();
         var user2 = $("#user2Input").val();
         var message = $("#messageInput").val();
-        connection.invoke("SendMessageToPrivateChat", user, user2,message);
-        $("messagesList").append(
-            `<li>${user}:${message}</li>`);
+        connection.invoke("SendMessageToPrivateChat", user, user2,message, "1");
+    }
+
+    function sendMessage(){
+        var user = $("#userInput").val();
+        var message = $("#messageInput").val();
+        connection.invoke("SendMessage", user,message);
     }
 </script>

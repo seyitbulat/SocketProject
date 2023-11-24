@@ -13,23 +13,21 @@ namespace SocketProject.Api.Hubs
 		}
 
 
-		public async Task SendMessage(string user, string message)
-		{
-			await Clients.All.SendAsync("ReceiveMessage", user, message);
-		}
+		//public async Task SendMessage(string user, string message)
+		//{
+		//	await Clients.All.SendAsync("ReceiveMessage", user, message);
+		//}
 
 
-		public async Task JoinPrivateChat(string user1, string user2)
+		public async Task JoinPrivateChat(string user1, string user2, string groupName)
 		{
-			string groupName = $"{user1}-{user2}";
 			await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
 		}
 
 
-		public async Task SendMessageToPrivateChat(string user1, string user2, string message)
+		public async Task SendMessageToPrivateChat(string user1, string user2, string message, string groupName)
 		{
-			string groupName = $"{user1}-{user2}";
-			await Clients.Group(groupName).SendAsync(user1, user2, message);
+			await Clients.Group(groupName).SendAsync("ReceiveMessage", user1, user2, message);
 		}
 
 		public async Task RemovePrivateChat(string user)
