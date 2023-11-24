@@ -28,5 +28,10 @@ namespace SocketProject.Api.Hubs
 			string groupName = $"{user1}-{user2}";
 			await Clients.Group(groupName).SendAsync(user1, user2, message);
 		}
+
+		public async Task RemovePrivateChat(string user)
+		{
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, user);
+        }
 	}
 }

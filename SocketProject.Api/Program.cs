@@ -3,17 +3,15 @@ using SocketProject.Api.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
 builder.Services.AddCors(options =>
 {
-	options.AddDefaultPolicy(builder =>
-	{
-		builder.WithOrigins("https://localhost:7121")
-						.AllowAnyHeader()
-						.WithMethods("GET", "POST")
-						.AllowCredentials();
-	});
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:50795", "https://localhost:7121").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+    });
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
@@ -27,7 +25,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors();
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 

@@ -1,0 +1,8 @@
+﻿<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7089/SaleHub").build();
+    connection.start().then(() => {
+        connection.invoke("GetSaleList");
+    }).catch((err) => {
+        console.log(err);
+    });
+</script>
