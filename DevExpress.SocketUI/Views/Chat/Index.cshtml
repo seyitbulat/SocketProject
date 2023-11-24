@@ -3,6 +3,11 @@
     <button id="joinChat" type="button">Kanal'a Katılabilirsin</button>
 </div>
 
+<div>
+    <input type="text" id="user2Input" placeholder="Friend Name" />
+</div>
+
+
 <div style="margin-top: 20px;">
     <input type="text" id="messageInput" placeholder="Type your message" />
     <button id="sendMessage" type="button">Mesaj Gönderebilirsin</button>
@@ -10,7 +15,6 @@
 
 <div style="margin-top: 20px;">
     <ul id="messagesList">
-        <li>ads</li>
     </ul>
 </div>
 
@@ -34,17 +38,22 @@
     });
 
     $("#sendMessage").click(function () {
-        joinChat();
+        sendMessage();
+
     });
 
     function joinChat() {
-        var user = $("#userInput").value;
-        connection.invoke("JoinPrivateChat", user);
+        var user = $("#userInput").val();
+        var user2 = $("#user2Input").val();
+        connection.invoke("JoinPrivateChat", user,user2);
     }
 
     function sendMessage() {
-        var user = $("#userInput").value;
-        var message = $("#messageInput").value;
-        connection.invoke("SendMessageToPrivateChat", user, message);
+        var user = $("#userInput").val();
+        var user2 = $("#user2Input").val();
+        var message = $("#messageInput").val();
+        connection.invoke("SendMessageToPrivateChat", user, user2,message);
+        $("messagesList").append(
+            `<li>${user}:${message}</li>`);
     }
 </script>

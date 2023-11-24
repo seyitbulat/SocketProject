@@ -4,15 +4,18 @@ namespace SocketProject.Api.Hubs
 {
 	public sealed class ChatHub : Hub
 	{
-		//public override async Task OnConnectedAsync()
-		//{
-		//	await Clients.All.SendAsync("ReceiveMessage", $"{Context.ConnectionId} girdi");
-		//}
+        public List<string> Messages { get; set; }
 
-
-		public async Task SendMessage(string user, string message, Guid group)
+        public override async Task OnConnectedAsync()
 		{
-			await Clients.Group(group.ToString()).SendAsync("ReceiveMessage", user, message);
+			await Clients.All.SendAsync("ReceiveMessage", $"{Context.ConnectionId} girdi");
+			Messages = new();
+		}
+
+
+		public async Task SendMessage(string user, string message)
+		{
+			await Clients.All.SendAsync("ReceiveMessage", user, message);
 		}
 
 
@@ -33,5 +36,10 @@ namespace SocketProject.Api.Hubs
 		{
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, user);
         }
+
+		public async Task GetMessages(string user)
+		{
+
+		}
 	}
 }
