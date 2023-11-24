@@ -1,8 +1,50 @@
-﻿<script>
-    var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7089/SaleHub").build();
-    connection.start().then(() => {
-        connection.invoke("GetSaleList");
-    }).catch((err) => {
-        console.log(err);
+﻿<div>
+    <input type="text" id="userInput" placeholder="Your Name" />
+    <button id="joinChat" type="button">Kanal'a Katılabilirsin</button>
+</div>
+
+<div style="margin-top: 20px;">
+    <input type="text" id="messageInput" placeholder="Type your message" />
+    <button id="sendMessage" type="button">Mesaj Gönderebilirsin</button>
+</div>
+
+<div style="margin-top: 20px;">
+    <ul id="messagesList">
+        <li>ads</li>
+    </ul>
+</div>
+
+<script src="~/lib/microsoft-signalr/signalr.min.js"></script>
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7121/chat").build();
+
+    connection.on("ReceiveMessage", function (user, message) {
+        var encodedMessage = user + " söyledi: " + message;
+        var li = document.createElement("li");
+        li.textContent = encodedMessage;
+        $("#messagesList").appendChild(li);
     });
+
+    connection.start().catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    $("#joinChat").click(function () {
+        joinChat();
+    });
+
+    $("#sendMessage").click(function () {
+        joinChat();
+    });
+
+    function joinChat() {
+        var user = $("#userInput").value;
+        connection.invoke("JoinPrivateChat", user);
+    }
+
+    function sendMessage() {
+        var user = $("#userInput").value;
+        var message = $("#messageInput").value;
+        connection.invoke("SendMessageToPrivateChat", user, message);
+    }
 </script>
