@@ -1,4 +1,5 @@
 using SocketProject.Api.Hubs;
+using SocketProject.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+
+builder.Services.AddSingleton<HubModel>();
+builder.Services.AddScoped<HubManager>();
 
 var app = builder.Build();
 

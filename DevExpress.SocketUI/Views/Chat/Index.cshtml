@@ -20,7 +20,7 @@
 
 <script src="~/lib/microsoft-signalr/signalr.min.js"></script>
 <script>
-    var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7121/chat").build();
+    var connection = new signalR.HubConnectionBuilder().withUrl("https://192.168.8.124:7121/chat").build();
 
     connection.on("ReceiveMessage", function (user, user2, message) {
         var encodedMessage = user + ": " + message;
@@ -46,14 +46,14 @@
     function joinChat() {
         var user = $("#userInput").val();
         var user2 = $("#user2Input").val();
-        connection.invoke("JoinPrivateChat", user,user2, "1");
+        connection.invoke("JoinPrivateChat", user,user2);
     }
 
     function sendPrivateMessage() {
         var user = $("#userInput").val();
         var user2 = $("#user2Input").val();
         var message = $("#messageInput").val();
-        connection.invoke("SendMessageToPrivateChat", user, user2,message, "1");
+        connection.invoke("SendMessageToPrivateChat", user, user2,message);
     }
 
     function sendMessage(){
