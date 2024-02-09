@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Infrastructure.Model;
+using System;
 using System.Collections.Generic;
 
 namespace SocketProject.Model.Models;
 
-public partial class User
+public partial class User : BaseEntity<long>
 {
     public long Id { get; set; }
 
